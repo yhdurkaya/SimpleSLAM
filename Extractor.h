@@ -18,7 +18,7 @@ public:
 public:
     cv::Mat currentFrameDescriptors, previousFrameDescriptors;
     std::vector<cv::KeyPoint> currentFrameKeyPoints, previousFrameKeyPoints;
-    std::vector<cv::DMatch> matches;
+    std::vector<std::pair<cv::KeyPoint, cv::KeyPoint>> matches;
 private:
     cv::Ptr<cv::ORB> orb;
     cv::Ptr<cv::GFTTDetector> gftt;
