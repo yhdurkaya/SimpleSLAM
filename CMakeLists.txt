@@ -3,7 +3,7 @@ project(SimpleSLAM)
 
 set(CMAKE_CXX_STANDARD 20)
 
-add_executable(SimpleSLAM main.cpp main.cpp Extractor.cpp Extractor.h)
+add_executable(SimpleSLAM main.cpp main.cpp src/Extractor.cpp inc/Extractor.h)
 
 find_package(OpenCV REQUIRED)
 

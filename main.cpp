@@ -6,7 +6,7 @@
 
 #include "opencv2/opencv.hpp"
 
-#include "Extractor.h"
+#include "inc/Extractor.h"
 
 int main()
 {

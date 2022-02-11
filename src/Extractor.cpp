@@ -2,7 +2,7 @@
 // Created by yhd on 11.02.2022.
 //
 
-#include "Extractor.h"
+#include "../inc/Extractor.h"
 
 Extractor::Extractor()
 {
