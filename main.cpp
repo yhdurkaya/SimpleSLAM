@@ -6,12 +6,12 @@
 
 #include "opencv2/opencv.hpp"
 
-#include "FeatureExtractor.h"
+#include "Extractor.h"
 
 int main()
 {
     cv::Mat currentFrame, currentFrameGray;
-    auto orbDetector = std::make_unique<FeatureExtractor>();
+    auto detector = std::make_unique<Extractor>();
 
     cv::VideoCapture cap("../TestData/test_countryroad.mp4");
 
@@ -31,13 +31,11 @@ int main()
 
         cv::resize(currentFrame, currentFrame, cv::Size(1920/2, 1080/2));
         cv::cvtColor(currentFrame, currentFrameGray, cv::COLOR_BGR2GRAY);
-        std::vector<cv::KeyPoint> keypoints;
-        cv::Mat descriptors;
 
-        orbDetector->extractKeypoints(currentFrameGray, keypoints, descriptors);
-        std::cout << "Keypoints size: " << keypoints.size() << "\n";
+        detector->extractKeypoints(currentFrameGray);
 
-        for(auto&& kp: keypoints){
+        for(std::size_t i = 0; i < detector->matches.size(); ++i){
+            auto kp = detector->currentFrameKeyPoints[detector->matches[i].queryIdx];
             cv::circle(currentFrame, kp.pt, 2, cv::Scalar(0, 255, 0), 1);
         }
 
