@@ -5,25 +5,50 @@
 #include <iostream>
 
 #include "opencv2/opencv.hpp"
-#include "Eigen/Dense"
-#include <pcl/pcl_config.h>
-#include "g2o/config.h"
 
-int main() {
-    std::cout << "Hello, World!" << std::endl;
+#include "FeatureExtractor.h"
 
-    std::cout << "OpenCV version : " << CV_VERSION << std::endl;
-    std::cout << "Major version : " << CV_MAJOR_VERSION << std::endl;
-    std::cout << "Minor version : " << CV_MINOR_VERSION << std::endl;
-    std::cout << "Subminor version : " << CV_SUBMINOR_VERSION << std::endl;
+int main()
+{
+    cv::Mat currentFrame, currentFrameGray;
+    auto orbDetector = std::make_unique<FeatureExtractor>();
 
-    std::cout << "Point Cloud Library version: " << PCL_VERSION << std::endl;
+    cv::VideoCapture cap("../TestData/test_countryroad.mp4");
 
-    Eigen::MatrixXd m(2,2);
-    m(0,0) = 3;
-    m(1,0) = 2.5;
-    m(0,1) = -1;
-    m(1,1) = m(1,0) + m(0,1);
-    std::cout << m << std::endl;
-    return 0;
+    if(!cap.isOpened())
+    {
+        std::cout << "Wrong input!\n";
+    }
+
+    while(true)
+    {
+        cap >> currentFrame;
+
+        if(currentFrame.empty())
+        {
+            break;
+        }
+
+        cv::resize(currentFrame, currentFrame, cv::Size(1920/2, 1080/2));
+        cv::cvtColor(currentFrame, currentFrameGray, cv::COLOR_BGR2GRAY);
+        std::vector<cv::KeyPoint> keypoints;
+        cv::Mat descriptors;
+
+        orbDetector->extractKeypoints(currentFrameGray, keypoints, descriptors);
+        std::cout << "Keypoints size: " << keypoints.size() << "\n";
+
+        for(auto&& kp: keypoints){
+            cv::circle(currentFrame, kp.pt, 2, cv::Scalar(0, 255, 0), 1);
+        }
+
+        cv::imshow("SimpleSlam", currentFrame);
+
+        char c=(char)cv::waitKey(25);
+
+        if(c==27) {
+            break;
+        }
+    }
+    cap.release();
+    cv::destroyAllWindows();
 }
