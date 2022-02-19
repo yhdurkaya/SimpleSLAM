@@ -60,18 +60,27 @@ void Extractor::filterCorrespondences()
     }
 
     fundamentalMatrix = cv::findFundamentalMat(pointsPrevious, pointsCurrent, outputMask);
-
-    //std::cout << outputMask << "\n \n \n";
-    std::size_t matchesSize = matches.size();
-    std::cout << "Matches size before pruning: " << matches.size() << "\n";
-
-    std::cout << "Matches size before after: " << matches.size() << "\n";
-    std::cout << fundamentalMatrix << "\n";
-
 }
 
 void Extractor::saveNewFeatures()
 {
     previousFrameKeyPoints = currentFrameKeyPoints;
     previousFrameDescriptors = currentFrameDescriptors;
+}
+
+void Extractor::drawCorrespondingLines(cv::Mat &image, bool enableFalseCorrespondences)
+{
+    for(std::size_t i = 0; i < this->matches.size(); ++i){
+        //std::cout << "Matches: " << detector->matches.size() << "\n";
+        auto kp = matches[i].first;
+        cv::circle(image, kp.pt, 2, cv::Scalar(0, 255, 0), 1);
+        if(outputMask.at<uchar>(0, i) == 1){
+            cv::line(image, matches[i].first.pt, matches[i].second.pt,
+                     cv::Scalar(255, 0, 0));
+        }
+        if(enableFalseCorrespondences && outputMask.at<uchar>(0, i) == 0) {
+            cv::line(image, matches[i].first.pt, matches[i].second.pt,
+                     cv::Scalar(0, 0, 255));
+        }
+    }
 }

@@ -18,6 +18,7 @@ class Extractor
 public:
     Extractor();
     void extractKeypoints(const cv::Mat& image);
+    void drawCorrespondingLines(cv::Mat& image, bool enableFalseCorrespondences);
 public:
     std::vector<std::pair<cv::KeyPoint, cv::KeyPoint>> matches;
     cv::Mat outputMask;
