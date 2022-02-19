@@ -35,6 +35,7 @@ int main()
         detector->extractKeypoints(currentFrameGray);
 
         for(std::size_t i = 0; i < detector->matches.size(); ++i){
+            //std::cout << "Matches: " << detector->matches.size() << "\n";
             auto kp = detector->matches[i].first;
             cv::circle(currentFrame, kp.pt, 2, cv::Scalar(0, 255, 0), 1);
             cv::line(currentFrame, detector->matches[i].first.pt, detector->matches[i].second.pt,
