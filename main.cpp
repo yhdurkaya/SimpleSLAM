@@ -3,6 +3,7 @@
 //
 
 #include <iostream>
+#include <thread>
 
 #include "opencv2/opencv.hpp"
 
@@ -38,13 +39,24 @@ int main()
             //std::cout << "Matches: " << detector->matches.size() << "\n";
             auto kp = detector->matches[i].first;
             cv::circle(currentFrame, kp.pt, 2, cv::Scalar(0, 255, 0), 1);
-            cv::line(currentFrame, detector->matches[i].first.pt, detector->matches[i].second.pt,
-                     cv::Scalar(255, 0, 0));
+            if(detector->outputMask.at<uchar>(0, i) == 0){
+                //cv::line(currentFrame, detector->matches[i].first.pt, detector->matches[i].second.pt,
+                //         cv::Scalar(0, 0, 255));
+            }
+            else{
+                cv::line(currentFrame, detector->matches[i].first.pt, detector->matches[i].second.pt,
+                         cv::Scalar(255, 0, 0));
+            }
+
         }
 
         cv::imshow("SimpleSlam", currentFrame);
 
         char c=(char)cv::waitKey(25);
+
+        using namespace std::chrono_literals;
+
+        //std::this_thread::sleep_for(2s);
 
         if(c==27) {
             break;

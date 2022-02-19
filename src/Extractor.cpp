@@ -52,26 +52,22 @@ void Extractor::filterCorrespondences()
 
     for(auto&& point : matches)
     {
-        pointsPrevious.push_back(point.first.pt);
+        pointsCurrent.push_back(point.first.pt);
     }
     for(auto&& point : matches)
     {
-        pointsCurrent.push_back(point.second.pt);
+        pointsPrevious.push_back(point.second.pt);
     }
 
-    cv::Mat outputMask;
     fundamentalMatrix = cv::findFundamentalMat(pointsPrevious, pointsCurrent, outputMask);
 
-    std::cout << outputMask << "\n \n \n";
+    //std::cout << outputMask << "\n \n \n";
+    std::size_t matchesSize = matches.size();
+    std::cout << "Matches size before pruning: " << matches.size() << "\n";
 
-    for(size_t idx = 0; idx < matches.size(); ++idx)
-    {
-        if(outputMask.at<uchar>(0, idx) == 0 )
-        {
-            std::cout << "1\n";
-            matches.erase(matches.begin()+idx-1);
-        }
-    }
+    std::cout << "Matches size before after: " << matches.size() << "\n";
+    std::cout << fundamentalMatrix << "\n";
+
 }
 
 void Extractor::saveNewFeatures()

@@ -20,6 +20,7 @@ public:
     void extractKeypoints(const cv::Mat& image);
 public:
     std::vector<std::pair<cv::KeyPoint, cv::KeyPoint>> matches;
+    cv::Mat outputMask;
 private:
     void computeDescriptors(const cv::Mat& image);
     void matcher();
