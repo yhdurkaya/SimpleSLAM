@@ -3,7 +3,6 @@
 //
 
 #include <iostream>
-#include <thread>
 
 #include "opencv2/opencv.hpp"
 
@@ -39,10 +38,6 @@ int main()
         cv::imshow("SimpleSlam", currentFrame);
 
         char c=(char)cv::waitKey(25);
-
-        using namespace std::chrono_literals;
-
-        //std::this_thread::sleep_for(2s);
 
         if(c==27) {
             break;
